@@ -10,11 +10,33 @@
 
 ```cpp
 #include <iostream>
-using namesapce std;
+using namespace std;
 
-int main() {
-     int n;
+int powerset(char S[], char subset[], int n, int i, int j)
+{
+    if (i == n)
+    {
+        cout << "{ ";
+        for (int k = 0; k < j; k++)
+            cout << subset[k] << " ";
+        cout << "}" << endl;
+        return 0;
+    }
+
+
+    powerset(S, subset, n, i + 1, j);
+
+    subset[j] = S[i];
+    powerset(S, subset, n, i + 1, j + 1);
+
+    return 0;
+}
+
+int main()
+{
+    int n;
     char S[20];
+    char subset[20];
 
     cout << "輸入集合元素個數 n: ";
     cin >> n;
@@ -23,28 +45,10 @@ int main() {
     for (int i = 0; i < n; i++)
         cin >> S[i];
 
-    cout << "Powerset(S):" << endl;
+    cout << "powerset(S):" << endl;
+    powerset(S, subset, n, 0, 0);
 
-    int total = pow(2, n);
-
-    for (int i = 0; i < total; i++)
-    {
-        cout << "{";
-
-        bool first = true;
-        for (int j = 0; j < n; j++)
-        {
-            if (i & (1 << j))
-            {
-                if (!first) cout << ", ";
-                cout << S[j];
-                first = false;
-            }
-        }
-
-        cout << "}" << endl;
-    }
-  return 0;
+    return 0;
 }
 ```
 
@@ -55,13 +59,14 @@ int main() {
 
 2.空間複雜度:
 S[n]=O(n)
+
 **4.測試與驗證**
 
 ```shell
 $ g++ problem2.cpp --std=c++17 -o problem2.exe
 $ ./problem2.exe
-輸入集合元素個數 n: 3
-輸入 3 個元素 (字元): a b c
+輸入集合元素個數 n:3
+輸入3個元素 (字元):a b c
 Powerset(S):
 {}
 {a}
